@@ -60,9 +60,9 @@
   </div></details>
 </div>
 <div id="libraryView" class="pad hidden"><div class="section-title">词库搜索</div><p class="note">保留原 PDF 的来源。双向重复词对合并为一项学习任务；独立词义记录共用。</p><div class="controls library-tabs"><button id="groupsLibraryBtn" class="btn primary small">原词组</button><button id="familiarLibraryBtn" class="btn outline small">熟悉词 <span id="familiarCount">0</span></button><button id="familiarAddToggle" class="btn ghost small hidden">＋ 添加熟悉词</button></div><div class="controls"><input id="librarySearch" class="search" style="flex:1;min-width:150px" placeholder="搜索英文或中文…"/><select id="libraryDay" class="select"><option value="all">所有天</option><option value="1">第 1 天</option><option value="2">第 2 天</option><option value="3">第 3 天</option><option value="4">第 4 天</option><option value="5">第 5 天</option></select></div><div class="note" id="libraryCount" style="margin-top:10px"></div><div id="libraryList" class="library-list"></div><div class="pager"><button id="prevPage" class="btn outline small">上一页</button><span id="pageLabel" class="note"></span><button id="nextPage" class="btn outline small">下一页</button></div></div>
-<div id="statsView" class="pad hidden"><div class="section-title">学习统计与冲刺设置</div><p class="note" id="reviewIntervalSummary"></p><div id="statGrid" class="statgrid"></div><h3 class="subhead">最近 7 天答题次数</h3><div id="historyPlot" class="hist" role="img" aria-label="最近七天学习次数"></div><hr class="hr"/><h3 class="subhead">复习间隔与设置</h3><div class="settings-grid"><label>初次不认识（分钟）<input class="num" id="unknownMinutes" type="number" min="1" max="200"/></label><label>复习仍不认识（分钟）<input class="num" id="failedMinutes" type="number" min="1" max="200"/></label><label>初次模糊（分钟）<input class="num" id="fuzzyMinutes" type="number" min="1" max="200"/></label><label>复习仍模糊（分钟）<input class="num" id="fuzzyRetryMinutes" type="number" min="1" max="200"/></label><label>认识词复习梯度（天，逗号分隔）<input class="num ladder" id="wordReviewIntervals" type="text" placeholder="1,3,7,14,30"/></label><label>配对正确复习梯度（天，逗号分隔）<input class="num ladder" id="pairReviewIntervals" type="text" placeholder="1,3,7,14,30"/></label><label>配对错误（分钟）<input class="num" id="pairWrongMinutes" type="number" min="1" max="200"/></label><label>延迟配对（后续新词数）<input class="num" id="pairDelayWords" type="number" min="1" max="200"/></label><label>每日评分上限（单词 / 词组）<input class="num" id="dailyAnswerLimit" type="number" min="1" max="500"/></label></div><p class="note">认识词和配对正确后，复习间隔会按成功次数逐级延长。自动模式会持续处理到期复习，清完后再进入新词；每日评分上限可控制当天学习量。</p><button id="saveSettings" class="btn primary">保存设置</button><p id="settingsStatus" class="note"></p><hr class="hr"/><h3 class="subhead">进度备份</h3><p class="note">进度只保存在当前浏览器。分享网页文件不会分享你的进度；换设备时先导出 JSON，再导入。</p><div class="controls"><button id="exportBtn" class="btn outline">导出进度 JSON</button><button id="importBtn" class="btn outline">导入进度 JSON</button><input type="file" id="importFile" accept=".json,application/json" class="hidden"/><button id="resetBtn" class="btn outline" style="color:var(--red)">清空本地进度</button></div><p id="storageStatus" class="note"></p></div>
+<div id="statsView" class="pad hidden"><div class="section-title">学习统计与冲刺设置</div><p class="note" id="reviewIntervalSummary"></p><div id="statGrid" class="statgrid"></div><h3 class="subhead">最近 7 天答题次数</h3><div id="historyPlot" class="hist" role="img" aria-label="最近七天学习次数"></div><hr class="hr"/><h3 class="subhead">复习间隔与设置</h3><div class="settings-grid"><label>初次不认识（分钟）<input class="num" id="unknownMinutes" type="number" min="1" max="200"/></label><label>复习仍不认识（分钟）<input class="num" id="failedMinutes" type="number" min="1" max="200"/></label><label>初次模糊（分钟）<input class="num" id="fuzzyMinutes" type="number" min="1" max="200"/></label><label>复习仍模糊（分钟）<input class="num" id="fuzzyRetryMinutes" type="number" min="1" max="200"/></label><label>认识词复习梯度（天，逗号分隔）<input class="num ladder" id="wordReviewIntervals" type="text" placeholder="1,3,7,14,30"/></label><label>配对正确复习梯度（天，逗号分隔）<input class="num ladder" id="pairReviewIntervals" type="text" placeholder="1,3,7,14,30"/></label><label>配对错误（分钟）<input class="num" id="pairWrongMinutes" type="number" min="1" max="200"/></label><label>延迟配对（后续新词数，默认 20）<input class="num" id="pairDelayWords" type="number" min="1" max="200"/></label><label>每日评分上限（单词 / 词组）<input class="num" id="dailyAnswerLimit" type="number" min="1" max="10000"/></label></div><p class="note">词组首次学完后，默认再学 20 个新词才到配对时间。自动模式会先处理到期单词，再处理到期词组；配对正确后，复习间隔会逐级延长。</p><button id="saveSettings" class="btn primary">保存设置</button><p id="settingsStatus" class="note"></p><hr class="hr"/><h3 class="subhead">进度备份</h3><p class="note">进度只保存在当前浏览器。分享网页文件不会分享你的进度；换设备时先导出 JSON，再导入。</p><div class="controls"><button id="exportBtn" class="btn outline">导出进度 JSON</button><button id="importBtn" class="btn outline">导入进度 JSON</button><input type="file" id="importFile" accept=".json,application/json" class="hidden"/><button id="resetBtn" class="btn outline" style="color:var(--red)">清空本地进度</button></div><p id="storageStatus" class="note"></p></div>
 </section>
-<aside class="side"><div class="panel"><h3>队列提醒</h3><div class="aside-num" id="sideDue">0</div><div class="note" id="sideNext" style="margin-top:7px"></div><div class="legend"><div><i class="dot green"></i><span>最多复习 3 个单词后穿插一个到期词组</span></div><div><i class="dot yellow"></i><span>答错的复习词隔天再复习，避免短间隔反复堆积</span></div><div><i class="dot"></i><span>没到期时可主动提前复习</span></div></div></div><div class="panel hidden" id="personalNotePanel"><h3>我的记忆笔记</h3><div id="personalNoteSide"></div></div><div class="panel"><h3>记忆方法</h3><div class="note">按空格后显示中文释义、人工整理的词源 / 构词提示和本组等价词。</div><hr class="hr"/><div class="note">原词表部分配对依赖题干语境。自动练习只采用 PDF 明确列出的词对，不会把整组词两两视为同义。</div></div></aside>
+<aside class="side"><div class="panel"><h3>队列提醒</h3><div class="aside-num" id="sideDue">0</div><div class="note" id="sideNext" style="margin-top:7px"></div><div class="legend"><div><i class="dot green"></i><span>到期单词全部复习完后，再做符合条件的词组配对</span></div><div><i class="dot yellow"></i><span>答错的复习词隔天再复习，避免短间隔反复堆积</span></div><div><i class="dot"></i><span>没到期时可主动提前复习</span></div></div></div><div class="panel hidden" id="personalNotePanel"><h3>我的记忆笔记</h3><div id="personalNoteSide"></div></div><div class="panel"><h3>记忆方法</h3><div class="note">按空格后显示中文释义、人工整理的词源 / 构词提示和本组等价词。</div><hr class="hr"/><div class="note">原词表部分配对依赖题干语境。自动练习只采用 PDF 明确列出的词对，不会把整组词两两视为同义。</div></div></aside>
 </div>
 <p class="footer">根据《真经 GRE 等价词汇总（2026 年版）》制作 · 词源资料参考 OpenEtymology（CC BY-SA 4.0）· 离线运行 · 进度仅保存在本机浏览器</p>
 </div>
@@ -8810,7 +8810,7 @@ window.GRE_SPRINT = (() => {
     }
     return {words,groups,byGroup:new Map(groups.map(g=>[g.id,g])),bySource,edges,component};
   }
-  function fresh(){return {version:2,uiRevision:3,words:{},notes:{},familiarWords:[],groups:{},daily:{},prefs:{mode:'auto',direction:'normal',day:'all',...DEFAULTS},seenCount:0,session:null,dueStreak:0,pausedDate:''}}
+  function fresh(){return {version:2,uiRevision:3,words:{},notes:{},familiarWords:[],groups:{},daily:{},prefs:{mode:'auto',direction:'normal',day:'all',...DEFAULTS},seenCount:0,session:null,pausedDate:''}}
   function clean(raw,model){
     const p=fresh();if(!raw||typeof raw!=='object')return p;
     if(raw.version!==2)return p;
@@ -8821,7 +8821,7 @@ window.GRE_SPRINT = (() => {
     p.daily=cleanDaily(raw.daily);
     if(raw.prefs&&typeof raw.prefs==='object')p.prefs={...p.prefs,...raw.prefs};
     delete p.prefs.reviewBatchSize;
-    p.seenCount=Math.max(0,Number(raw.seenCount)||0);p.dueStreak=Math.max(0,Math.min(3,Number(raw.dueStreak)||0));p.pausedDate=typeof raw.pausedDate==='string'?raw.pausedDate:'';
+    p.seenCount=Math.max(0,Number(raw.seenCount)||0);p.pausedDate=typeof raw.pausedDate==='string'?raw.pausedDate:'';
     if(raw.session&&model.byGroup.has(raw.session.groupId))p.session={groupId:raw.session.groupId,index:Math.max(0,Number(raw.session.index)||0)};
     if(raw.pending&&typeof raw.pending==='object'){
       const t=raw.pending.task;
@@ -8844,7 +8844,7 @@ window.GRE_SPRINT = (() => {
     return p;
   }
   function daily(p,now){const id=dateKey(now);if(!p.daily[id])p.daily[id]={new:0,answers:0,groups:0};return p.daily[id]}
-  function config(p){const c={};for(const k of Object.keys(DEFAULTS)){if(k==='wordReviewIntervals'||k==='pairReviewIntervals'){c[k]=parseIntervals(p.prefs[k],DEFAULTS[k]).join(',');continue}const n=Number(p.prefs[k]),min=k==='dailyLimit'?0:1,max=k==='dailyLimit'?modelMax():k==='dailyAnswerLimit'?500:200;c[k]=Number.isFinite(n)?Math.max(min,Math.min(max,n)):DEFAULTS[k]}return c}
+  function config(p){const c={};for(const k of Object.keys(DEFAULTS)){if(k==='wordReviewIntervals'||k==='pairReviewIntervals'){c[k]=parseIntervals(p.prefs[k],DEFAULTS[k]).join(',');continue}const n=Number(p.prefs[k]),min=k==='dailyLimit'?0:1,max=k==='dailyLimit'?modelMax():k==='dailyAnswerLimit'?10000:200;c[k]=Number.isFinite(n)?Math.max(min,Math.min(max,n)):DEFAULTS[k]}return c}
   function wordIntervalDays(p,successCount=0){return intervalAt(parseIntervals(config(p).wordReviewIntervals,DEFAULTS.wordReviewIntervals),successCount)}
   function modelMax(){return 10000}
   function groupState(p,g){return p.groups[g.id]||{id:g.id,covered:[],introFinished:false,pairDone:false,lastCorrect:false,errors:0,successes:0,next:0,pairAt:0,completedDate:'',last:0}}
@@ -8876,13 +8876,10 @@ window.GRE_SPRINT = (() => {
     if(mode==='new')return newTask();
     if(mode==='wrong'){const w=(early?weakWords(p,model):dw.filter(w=>!p.words[w].known))[0];return w?wordTask(w):null}
     if(mode==='pair'){const g=(early?model.groups.filter(g=>p.groups[g.id]?.introFinished):dg)[0];return g?pairTask(g):null}
-    // Auto mode clears due work before new learning.
-    // Within due work, place one pair after at most three word reviews.
-    if(dw.length&&p.dueStreak<3){p.dueStreak++;return wordTask(dw[0])}
-    if(dg.length&&(!dw.length||p.dueStreak>=3)){p.dueStreak=0;return pairTask(dg[0])}
-    if(dw.length){p.dueStreak=0;return wordTask(dw[0])}
-    if(dg.length){p.dueStreak=0;return pairTask(dg[0])}
-    const freshTask=newTask();if(freshTask){p.dueStreak=0;return freshTask}
+    // Clear all due word reviews before starting any due synonym-pair reviews.
+    if(dw.length)return wordTask(dw[0]);
+    if(dg.length)return pairTask(dg[0]);
+    const freshTask=newTask();if(freshTask)return freshTask
     if(early){const w=weakWords(p,model)[0];if(w)return wordTask(w);const g=model.groups.find(x=>p.groups[x.id]?.introFinished);if(g)return pairTask(g)}
     return null;
   }
@@ -8976,7 +8973,7 @@ if(storedProgress?.uiRevision!==UI_REVISION){
   }
   progress.uiRevision=UI_REVISION;
 }
-let tab='study',libPage=0,libraryMode='groups',familiarAddMode=false,storageOK=true,advanceTimer=null,hintVisible=false,noteEditingWord=null;
+let tab='study',libPage=0,libraryMode='groups',familiarAddMode=false,storageOK=true,advanceTimer=null,hintVisible=false,noteEditingWord=null,noteDraft='';
 // 已评分词只保留在本次打开页面中的浏览记录；查看不会改动复习队列。
 const wordHistory=[];
 let historyIndex=-1;
@@ -9019,10 +9016,10 @@ function memorySentence(t,meaning){
 }
 function personalNote(wordId){return String(progress.notes?.[wordId]||'')}
 function savePersonalNote(wordId,value){
-  const text=String(value||'').trim().slice(0,500);
+  const text=String(value??noteDraft).trim().slice(0,500);
   progress.notes||={};
   if(text)progress.notes[wordId]=text;else delete progress.notes[wordId];
-  noteEditingWord=null;save();renderWithoutJump();
+  noteEditingWord=null;noteDraft='';save();renderWithoutJump();
 }
 function renderPersonalNotePanel(wordId,visible){
   const panel=$('personalNotePanel'),area=$('personalNoteSide');
@@ -9030,12 +9027,15 @@ function renderPersonalNotePanel(wordId,visible){
   if(!visible||!wordId){panel.classList.add('hidden');return}
   panel.classList.remove('hidden');
   const saved=personalNote(wordId);
+  const existingInput=$('personalNoteInput');
+  if(noteEditingWord===wordId&&existingInput)noteDraft=existingInput.value;
   area.innerHTML=noteEditingWord===wordId
-    ? `<textarea id="personalNoteInput" maxlength="500" placeholder="例如：和某个熟词、画面或自己的联想联系起来…">${safe(saved)}</textarea><div class="note-actions"><button class="btn primary small" id="savePersonalNoteBtn" type="button">保存笔记</button><button class="btn outline small" id="cancelPersonalNoteBtn" type="button">取消</button></div>`
+    ? `<textarea id="personalNoteInput" maxlength="500" placeholder="例如：和某个熟词、画面或自己的联想联系起来…">${safe(noteDraft)}</textarea><div class="note-actions"><button class="btn primary small" id="savePersonalNoteBtn" type="button">保存笔记</button><button class="btn outline small" id="cancelPersonalNoteBtn" type="button">取消</button></div>`
     : saved?`<div class="personal-note-text">${safe(saved)}</div><button class="btn outline small" id="editPersonalNoteBtn" type="button">编辑笔记</button>`:`<p class="note">为当前单词写下自己的联想。</p><button class="btn outline small" id="editPersonalNoteBtn" type="button">＋ 添加笔记</button>`;
-  $('editPersonalNoteBtn')?.addEventListener('click',()=>{noteEditingWord=wordId;renderWithoutJump()});
+  $('editPersonalNoteBtn')?.addEventListener('click',()=>{noteEditingWord=wordId;noteDraft=saved;renderWithoutJump()});
+  $('personalNoteInput')?.addEventListener('input',event=>{noteDraft=event.currentTarget.value});
   $('savePersonalNoteBtn')?.addEventListener('click',()=>savePersonalNote(wordId,$('personalNoteInput').value));
-  $('cancelPersonalNoteBtn')?.addEventListener('click',()=>{noteEditingWord=null;renderWithoutJump()});
+  $('cancelPersonalNoteBtn')?.addEventListener('click',()=>{noteEditingWord=null;noteDraft='';renderWithoutJump()});
 }
 function fmtWait(ms){if(ms<60000)return '不到 1 分钟';if(ms<86400000)return `${Math.ceil(ms/60000)} 分钟`;return `${Math.ceil(ms/86400000)} 天`}
 function renderWithoutJump(){
@@ -9221,7 +9221,7 @@ function init(){const d=new Date();$('todayDate').textContent=d.toLocaleDateStri
     if(!hintVisible)return;
     const grade={'1':'unknown','2':'fuzzy','3':'known','4':'familiar'}[e.key];if(grade)$('cardArea').querySelector(`[data-grade="${grade}"]`)?.click();
   });
-  if(!pausedToday())pick();render();$('endTodayBtn').textContent=pausedToday()?'继续今天':'结束今天';window.setInterval(()=>{if(!pausedToday()){if(!task())pick();render()}else renderMetrics()},30000);
+  if(!pausedToday())pick();render();$('endTodayBtn').textContent=pausedToday()?'继续今天':'结束今天';window.setInterval(()=>{if(!pausedToday()){if(!task())pick();if(noteEditingWord){renderMetrics();return}render()}else renderMetrics()},30000);
   window.__GRE_APP_TEST__={model,core,getProgress:()=>progress,getTask:task,next,pick,render};
 }
 init();
