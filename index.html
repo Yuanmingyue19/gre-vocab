@@ -8816,7 +8816,16 @@ window.GRE_SPRINT = (() => {
     if(raw.version!==2)return p;
     if(raw.words&&typeof raw.words==='object')for(const [id,s] of Object.entries(raw.words))if(model.words.has(id)&&s&&typeof s==='object')p.words[id]={id,checked:!!s.checked,known:!!s.known,grade:['unknown','fuzzy','known','familiar'].includes(s.grade)?s.grade:(s.known?'known':'unknown'),errors:Math.max(0,Number(s.errors)||0),last:Number(s.last)||0,next:Number(s.next)||0,reviews:Math.max(0,Number(s.reviews)||0),contextGroup:model.byGroup.has(s.contextGroup)?s.contextGroup:null};
     if(raw.notes&&typeof raw.notes==='object')for(const [id,note] of Object.entries(raw.notes))if(model.words.has(id)&&typeof note==='string'&&note.trim())p.notes[id]=note.trim().slice(0,500);
-    p.familiarWords=unique((Array.isArray(raw.familiarWords)?raw.familiarWords:Object.values(p.words).filter(w=>w.grade==='familiar').map(w=>w.id)).filter(id=>model.words.has(id)));
+    // Keep the explicit library and each word's grade in sync. Older exports
+    // can have one side without the other, which made familiar words reappear.
+    p.familiarWords=unique([
+      ...(Array.isArray(raw.familiarWords)?raw.familiarWords:[]),
+      ...Object.values(p.words).filter(w=>w.grade==='familiar').map(w=>w.id)
+    ].filter(id=>model.words.has(id)));
+    for(const id of p.familiarWords){
+      const s=p.words[id]||{id,checked:true,errors:0,last:0,reviews:0,contextGroup:null};
+      s.checked=true;s.known=true;s.grade='familiar';s.next=0;p.words[id]=s;
+    }
     if(raw.groups&&typeof raw.groups==='object')for(const [id,s] of Object.entries(raw.groups))if(model.byGroup.has(id)&&s&&typeof s==='object')p.groups[id]={id,covered:unique((Array.isArray(s.covered)?s.covered:[]).filter(w=>model.words.has(w))),introFinished:!!s.introFinished,pairDone:!!s.pairDone,lastCorrect:!!s.lastCorrect,errors:Math.max(0,Number(s.errors)||0),successes:Math.max(0,Number(s.successes)|| (s.lastSuccess?1:0)),next:Number(s.next)||0,pairAt:Math.max(0,Number(s.pairAt)||0),completedDate:String(s.completedDate||''),last:Number(s.last)||0,lastSuccess:Number(s.lastSuccess)||0,legacy:!!s.legacy};
     p.daily=cleanDaily(raw.daily);
     if(raw.prefs&&typeof raw.prefs==='object')p.prefs={...p.prefs,...raw.prefs};
@@ -8831,6 +8840,7 @@ window.GRE_SPRINT = (() => {
         if(valid&&Array.isArray(t.choices)&&t.choices.every(w=>model.words.has(w)))p.pending={task:{type:'pair',groupId:g.id,prompt:t.prompt,answer:t.answer,choices:t.choices,binary:!!t.binary,binaryAnswer:!!t.binaryAnswer,review:!!t.review},feedback:['correct','wrong'].includes(raw.pending.feedback)?raw.pending.feedback:null,showMeaning:!!raw.pending.showMeaning};
       }
     }
+    if(p.pending?.task.type==='word'&&(p.familiarWords.includes(p.pending.task.wordId)||p.words[p.pending.task.wordId]?.grade==='familiar'))p.pending=null;
     return p;
   }
   function migrateLegacy(legacy,model,deck){
@@ -8852,10 +8862,10 @@ window.GRE_SPRINT = (() => {
     if(!p.session)return null;const g=model.byGroup.get(p.session.groupId);if(!g){p.session=null;return null}
     for(let i=p.session.index;i<g.members.length;i++){
       const w=g.members[i],gs=groupState(p,g);
-      // A group's first pass is independent from each word's global mastery.
-      // Every member is rated once on this first pass; later work is scheduled
-      // as an individual word review rather than reopening the whole group.
-      if(gs.covered.includes(w)){p.session.index=i+1;continue}
+      // Familiar means no more word reviews, including unfinished first passes.
+      if(gs.covered.includes(w)||(p.familiarWords||[]).includes(w)||p.words[w]?.grade==='familiar'){
+        gs.covered=unique([...gs.covered,w]);p.groups[g.id]=gs;p.session.index=i+1;continue;
+      }
       p.session.index=i;return {type:'word',wordId:w,groupId:g.id,review:false};
     }
     const gs=groupState(p,g);gs.introFinished=true;gs.pairAt=p.seenCount+config(p).pairDelayWords;gs.next=0;p.groups[g.id]=gs;p.session=null;return null;
@@ -9155,6 +9165,11 @@ function setFamiliarWord(wordId,add){
   }else{
     progress.familiarWords=progress.familiarWords.filter(id=>id!==wordId);
     const state=progress.words[wordId];if(state?.grade==='familiar'){state.grade='known';state.known=true;state.last=now();state.next=now()+core.wordIntervalDays(progress,0)*core.DAY}
+  }
+  // Return to the familiar list after adding so the user can confirm it is saved.
+  if(add)familiarAddMode=false;
+  if(add&&progress.pending?.task?.type==='word'&&progress.pending.task.wordId===wordId){
+    clearTimer();progress.pending=null;hintVisible=false;pick();
   }
   save();renderLibrary();
 }
